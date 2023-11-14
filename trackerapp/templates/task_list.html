@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task List</title>
+</head>
+<body>
+    <h1>Task List</h1>
+    <a href="{% url 'task-new' %}">Create New Task</a>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <p>{{task.id}}</p>
+                <strong>{{ task.title }}</strong>
+                <p>{{ task.description }}</p>
+                <p>Due by: {{ task.due_date }}</p>
+                <p>Status: {{ task.status }}</p>
+                <a href="{% url 'task-update' task.id %}">Edit</a>
+                <a href="{% url 'task-delete' task.id %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No tasks available.</li>
+        {% endfor %}
+    </ul>
+    {% if is_paginated %}
+        <div>
+            {% if page_obj.has_previous %}
+                <a href="?page=1">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</body>
+</html>
